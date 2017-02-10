@@ -207,6 +207,9 @@ public class MainActivity extends PreferenceActivity implements OnSharedPreferen
         if (item.getItemId() == R.id.status) {
             startActivity(new Intent(this, StatusActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.devices) {
+            startActivity(new Intent(this, DeviceListActivity.class));
+            return true;
         } else if (item.getItemId() == R.id.shortcuts) {
             addShortcuts(ShortcutActivity.EXTRA_ACTION_START, R.string.shortcut_start);
             addShortcuts(ShortcutActivity.EXTRA_ACTION_STOP, R.string.shortcut_stop);

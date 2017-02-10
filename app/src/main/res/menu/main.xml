@@ -7,6 +7,11 @@
         android:showAsAction="always" />
 
     <item
+        android:id="@+id/devices"
+        android:title="@string/devices"
+        android:showAsAction="always" />
+
+    <item
         android:id="@+id/shortcuts"
         android:title="@string/menu_shortcuts"
         android:showAsAction="never" />
