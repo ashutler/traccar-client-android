@@ -33,7 +33,7 @@ public class DeviceListActivity extends Activity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new DeviceListAdapter();
+        mAdapter = new DeviceListAdapter(new ArrayList<Device>());
         mRecyclerView.setAdapter(mAdapter);
 
         new GetDevices().execute();
