@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.traccar.client.model.Device;
 
 import java.util.ArrayList;
@@ -48,12 +49,18 @@ public class DeviceListActivity extends Activity {
         @Override
         protected ArrayList<Device> doInBackground(Void... params) {
             //TODO: Get this from settings
-            String serverUrl = "http://cydonian.homelinux.net:5055";
-            String deviceAPIUrl = serverUrl + "/devices";
+            String serverUrl = "http://cydonian.homelinux.net:8082";
+            String deviceAPIUrl = serverUrl + "/api/devices";
             HttpHandler sh = new HttpHandler();
             String jsonStr = sh.makeServiceCall(deviceAPIUrl);
 
-            ArrayList<Device> devices = new ArrayList<>();
+            JsonParser parser = new JsonParser();
+            ArrayList<Device> devices = null;
+            try {
+                devices = parser.ParseDevices(jsonStr);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             // TODO: Make the array of devices from the JSON returned:
             // example: https://www.tutorialspoint.com/android/android_json_parser.htm
