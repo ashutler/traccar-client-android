@@ -1,15 +1,12 @@
 package org.traccar.client;
 
-import android.util.Log;
+import android.util.Base64;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 public class HttpHandler {
@@ -21,25 +18,45 @@ public class HttpHandler {
 
     public String makeServiceCall(String reqUrl) {
         String response = null;
-        try {
-            URL url = new URL(reqUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            // read the response
-            InputStream in = new BufferedInputStream(conn.getInputStream());
-            response = convertStreamToString(in);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage());
-        } catch (ProtocolException e) {
-            Log.e(TAG, "ProtocolException: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, "IOException: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
-        }
+        response = getData(reqUrl, "dustin", "caixI8tLJk4x");
         return response;
     }
+    public static String getData(String uri, String userName, String userPassword) {
+        BufferedReader reader = null;
+        byte[] loginBytes = (userName + ":" + userPassword).getBytes();
 
+        StringBuilder loginBuilder = new StringBuilder()
+                .append("Basic ")
+                .append(Base64.encodeToString(loginBytes, Base64.DEFAULT));
+
+        try {
+            URL url = new URL(uri);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.addRequestProperty("Authorization", loginBuilder.toString());
+
+            StringBuilder sb = new StringBuilder();
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = reader.readLine())!= null){
+                sb.append(line);
+                sb.append("\n");
+            }
+
+            return  sb.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (null != reader){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
