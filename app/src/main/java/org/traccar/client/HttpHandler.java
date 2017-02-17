@@ -1,5 +1,6 @@
 package org.traccar.client;
 
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -21,7 +22,9 @@ public class HttpHandler {
 
     public String makeServiceCall(String reqUrl) {
         String response = null;
+        String basicAuth = "Basic " + Base64.encodeToString("dustin@cydonian.ca:caixI8tLJk4x".getBytes(), Base64.NO_WRAP);
         try {
+
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

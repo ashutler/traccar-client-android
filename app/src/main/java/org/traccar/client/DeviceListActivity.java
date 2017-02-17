@@ -7,10 +7,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.traccar.client.model.Device;
+import junit.framework.Assert;
 
+import org.traccar.client.model.Device;
+import org.traccar.client.model.User;
+import org.traccar.client.model.WebService;
+
+import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class DeviceListActivity extends Activity {
     private RecyclerView mRecyclerView;
@@ -39,7 +51,10 @@ public class DeviceListActivity extends Activity {
         new GetDevices().execute();
 
     }
-    private class GetDevices extends AsyncTask<Void, Void, ArrayList<Device>> {
+    private class GetDevices extends AsyncTask<Void, Void, Void> {
+
+        private List<Device> devices = null;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -47,30 +62,41 @@ public class DeviceListActivity extends Activity {
                     "Json Data is downloading",Toast.LENGTH_LONG).show();
         }
         @Override
-        protected ArrayList<Device> doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             //TODO: Get this from settings
-            String serverUrl = "http://cydonian.homelinux.net:8082";
-            String deviceAPIUrl = serverUrl + "/api/devices";
-            HttpHandler sh = new HttpHandler();
-            String jsonStr = sh.makeServiceCall(deviceAPIUrl);
+            String username = "dustin@cydonian.ca";
+            String password = "caixI8tLJk4x";
+            String serverURL = "http://cydonian.homelinux.net:8082";
 
-            JsonParser parser = new JsonParser();
-            ArrayList<Device> devices = null;
+            CookieManager cookieManager = new CookieManager();
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .cookieJar(new JavaNetCookieJar(cookieManager)).build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(serverURL)
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .build();
+
+            WebService service = retrofit.create(WebService.class);
+
             try {
-                devices = parser.ParseDevices(jsonStr);
-            } catch (JSONException e) {
+                User user = service.addSession(username, password).execute().body();
+                devices = service.getDevices().execute().body();
+                Assert.assertNotNull(user);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            // TODO: Make the array of devices from the JSON returned:
-            // example: https://www.tutorialspoint.com/android/android_json_parser.htm
-            return devices;
+            return null;
         }
         @Override
-        protected void onPostExecute(ArrayList<Device> result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
             // TODO: Set the data in the d
-            mAdapter.refill(result);
+            mAdapter.refill((ArrayList<Device>) devices);
         }
+
     }
 }

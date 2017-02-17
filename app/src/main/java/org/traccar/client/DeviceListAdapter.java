@@ -9,10 +9,14 @@ import android.widget.TextView;
 import org.traccar.client.model.Device;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.traccar.client.R.id.speed;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder>  {
 
     ArrayList<Device> mDevices;
+    HashMap<String, Position> mPositions;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public DeviceListAdapter(ArrayList<Device> myDataset) {
@@ -29,7 +33,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
 
     @Override
     public DeviceListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView item = (TextView) LayoutInflater.from(parent.getContext())
+        View item = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.device_list_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(item);
@@ -39,10 +43,11 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
     @Override
     public void onBindViewHolder(DeviceListAdapter.ViewHolder holder, int position) {
         Device device = mDevices.get(position);
+
         if (device != null) {
-            holder.mName.setText(device.name);
-            holder.mPosition.setText(device.lastUpdate); // Should be position!!!!
-            holder.mSpeed.setText(device.id); // should be speed!!!!
+            holder.mName.setText(device.getName());
+            holder.mPosition.setText(device.getLastUpdate().toString());
+            holder.mSpeed.setText(device.getId());
         }
     }
 
@@ -59,10 +64,10 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
 
         public ViewHolder(View item) {
             super(item);
-            mDeviceListItem = (TextView)item;
+            mDeviceListItem = item;
             mName = (TextView)item.findViewById(R.id.device_name);
             mPosition = (TextView)item.findViewById(R.id.position);
-            mSpeed = (TextView)item.findViewById(R.id.speed);
+            mSpeed = (TextView)item.findViewById(speed);
         }
     }
 }

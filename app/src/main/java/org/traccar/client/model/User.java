@@ -1,7 +1,7 @@
 package org.traccar.client.model;
 
 /*
- * Copyright 2015 Anton Tananaev (anton.tananaev@gmail.com)
+ * Copyright 2015 - 2016 Anton Tananaev (anton.tananaev@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,13 @@ package org.traccar.client.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
-import java.util.Date;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Device {
+public class User {
 
     private long id;
 
-    public String getId() {
-        return String.valueOf(id);
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {
@@ -44,39 +41,33 @@ public class Device {
         this.name = name;
     }
 
-    private String uniqueId;
+    private String speedUnit;
 
-    public String getUniqueId() {
-        return uniqueId;
-    }
+    public String getSpeedUnit() { return speedUnit; }
 
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
+    public void setSpeedUnit(String speedUnit) { this.speedUnit = speedUnit; }
 
-    private String status;
+    private double latitude;
 
-    public String getStatus() {
-        return status;
-    }
+    public double getLatitude() { return latitude; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    private Date lastUpdate;
+    private double longitude;
 
-    public Date getLastUpdate() {
-        return lastUpdate;
-    }
+    public double getLongitude() { return longitude; }
 
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
-    @Override
-    public String toString() {
-        return name;
-    }
+    private int zoom;
 
+    public int getZoom() { return zoom; }
+
+    public void setZoom(int zoom) { this.zoom = zoom; }
+
+    private boolean twelveHourFormat;
+
+    public boolean getTwelveHourFormat() { return twelveHourFormat; }
+
+    public void setTwelveHourFormat(boolean twelveHourFormat) { this.twelveHourFormat = twelveHourFormat; }
 }
