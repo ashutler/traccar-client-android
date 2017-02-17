@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class ShortcutActivity extends Activity {
                     preferences.getString(MainActivity.KEY_DEVICE, null),
                     location, PositionProvider.getBatteryLevel(this));
 
-            String request = ProtocolFormatter.formatRequest(
+            String request = ProtocolFormatter.formatPositionRequest(
                     preferences.getString(MainActivity.KEY_ADDRESS, null),
                     Integer.parseInt(preferences.getString(MainActivity.KEY_PORT, null)),
                     preferences.getBoolean(MainActivity.KEY_SECURE, false),
@@ -71,8 +72,8 @@ public class ShortcutActivity extends Activity {
 
             RequestManager.sendRequestAsync(request, new RequestManager.RequestHandler() {
                 @Override
-                public void onComplete(boolean success) {
-                    if (success) {
+                public void onComplete(String response) {
+                    if (!response.isEmpty()) {
                         Toast.makeText(ShortcutActivity.this, R.string.status_send_success, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ShortcutActivity.this, R.string.status_send_fail, Toast.LENGTH_SHORT).show();

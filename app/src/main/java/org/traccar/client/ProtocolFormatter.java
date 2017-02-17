@@ -19,11 +19,11 @@ import android.net.Uri;
 
 public class ProtocolFormatter {
 
-    public static String formatRequest(String address, int port, boolean secure, Position position) {
-        return formatRequest(address, port, secure, position, null);
+    public static String formatPositionRequest(String address, int port, boolean secure, Position position) {
+        return formatPositionRequest(address, port, secure, position, null);
     }
 
-    public static String formatRequest(String address, int port, boolean secure, Position position, String alarm) {
+    public static String formatPositionRequest(String address, int port, boolean secure, Position position, String alarm) {
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(secure ? "https" : "http").encodedAuthority(address + ':' + port)
@@ -42,5 +42,14 @@ public class ProtocolFormatter {
 
         return builder.build().toString();
     }
+    public static String formatDevicesRequest(String address, int port, boolean secure) {
 
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(secure ? "https" : "http").encodedAuthority(address + ':' + port)
+                .appendPath("api")
+                .appendPath("devices");
+
+        return builder.build().toString();
+    }
+    // TODO: Create a formatter for get positions API
 }

@@ -17,8 +17,10 @@ package org.traccar.client;
 
 import android.os.AsyncTask;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -27,10 +29,10 @@ public class RequestManager {
     private static final int TIMEOUT = 15 * 1000;
 
     public interface RequestHandler {
-        void onComplete(boolean success);
+        void onComplete(String reponse);
     }
 
-    private static class RequestAsyncTask extends AsyncTask<String, Void, Boolean> {
+    private static class RequestAsyncTask extends AsyncTask<String, Void, String> {
 
         private RequestHandler handler;
 
@@ -39,17 +41,17 @@ public class RequestManager {
         }
 
         @Override
-        protected Boolean doInBackground(String... request) {
+        protected String doInBackground(String... request) {
             return sendRequest(request[0]);
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(String result) {
             handler.onComplete(result);
         }
     }
 
-    public static boolean sendRequest(String request) {
+    public static String sendRequest(String request) {
         InputStream inputStream = null;
         try {
             URL url = new URL(request);
@@ -57,19 +59,18 @@ public class RequestManager {
             connection.setReadTimeout(TIMEOUT);
             connection.setConnectTimeout(TIMEOUT);
             connection.connect();
-            inputStream = connection.getInputStream();
-            while (inputStream.read() != -1);
-            return true;
-        } catch (IOException error) {
-            return false;
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException secondError) {
-                return false;
+            StringBuilder sb = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = reader.readLine())!= null){
+                sb.append(line);
+                sb.append("\n");
             }
+
+            return  sb.toString();
+
+        } catch (IOException error) {
+            return "";
         }
     }
 

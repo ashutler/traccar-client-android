@@ -199,11 +199,11 @@ public class TrackingController implements PositionProvider.PositionListener, Ne
     private void send(final Position position) {
         log("send", position);
         lock();
-        String request = ProtocolFormatter.formatRequest(address, port, secure, position);
+        String request = ProtocolFormatter.formatPositionRequest(address, port, secure, position);
         RequestManager.sendRequestAsync(request, new RequestManager.RequestHandler() {
             @Override
-            public void onComplete(boolean success) {
-                if (success) {
+            public void onComplete(String response) {
+                if (!response.isEmpty()) {
                     delete(position);
                 } else {
                     StatusActivity.addMessage(context.getString(R.string.status_send_fail));
