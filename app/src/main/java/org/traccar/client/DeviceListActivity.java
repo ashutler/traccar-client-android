@@ -10,6 +10,7 @@ import android.widget.Toast;
 import junit.framework.Assert;
 
 import org.traccar.client.model.Device;
+import org.traccar.client.model.Position;
 import org.traccar.client.model.User;
 import org.traccar.client.model.WebService;
 
@@ -45,7 +46,8 @@ public class DeviceListActivity extends Activity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new DeviceListAdapter(new ArrayList<Device>());
+        mAdapter = new DeviceListAdapter(new ArrayList<Device>(),
+                new ArrayList<Position>());
         mRecyclerView.setAdapter(mAdapter);
 
         new GetDevices().execute();
@@ -53,7 +55,9 @@ public class DeviceListActivity extends Activity {
     }
     private class GetDevices extends AsyncTask<Void, Void, Void> {
 
+        private List<User> users = null;
         private List<Device> devices = null;
+        private List<Position> positions = null;
 
         @Override
         protected void onPreExecute() {
@@ -83,7 +87,13 @@ public class DeviceListActivity extends Activity {
 
             try {
                 User user = service.addSession(username, password).execute().body();
+                users = service.getUsers().execute().body();
                 devices = service.getDevices().execute().body();
+                // Get the positions for each device
+                // TODO: pass these separately into the adapter
+                for(Device device: devices) {
+                    positions = service.getPositions(device.getId()).execute().body();
+                }
                 Assert.assertNotNull(user);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -95,7 +105,7 @@ public class DeviceListActivity extends Activity {
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
             // TODO: Set the data in the d
-            mAdapter.refill((ArrayList<Device>) devices);
+            mAdapter.refill((ArrayList<Device>) devices, positions);
         }
 
     }

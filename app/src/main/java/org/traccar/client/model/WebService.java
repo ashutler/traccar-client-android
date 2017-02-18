@@ -35,10 +35,16 @@ public interface WebService {
     @GET("/api/devices")
     Call<List<Device>> getDevices();
 
+    @GET("/api/users")
+    Call<List<User>> getUsers();
+
     @GET("/api/commandtypes")
     Call<List<CommandType>> getCommandTypes(@Query("deviceId") long deviceId);
 
     @POST("/api/commands")
     Call<Command> sendCommand(@Body Command command);
+
+    @GET("/api/positions")
+    Call<List<Position>> getPositions(@Query("id") String id);
 
 }

@@ -9,23 +9,27 @@ import android.widget.TextView;
 import org.traccar.client.model.Device;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import static org.traccar.client.R.id.speed;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder>  {
 
     ArrayList<Device> mDevices;
-    HashMap<String, Position> mPositions;
+    List<org.traccar.client.model.Position> mPositions;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public DeviceListAdapter(ArrayList<Device> myDataset) {
+    public DeviceListAdapter(ArrayList<Device> myDataset,
+                             List<org.traccar.client.model.Position> positions) {
         mDevices = myDataset;
+        mPositions = positions;
     }
 
     public DeviceListAdapter() {
     }
-    public void refill(ArrayList<Device> devices) {
+    public void refill(ArrayList<Device> devices, List<org.traccar.client.model.Position> positions) {
+        mPositions.clear();
+        mPositions = positions;
         mDevices.clear();
         mDevices = devices;
         notifyDataSetChanged();
