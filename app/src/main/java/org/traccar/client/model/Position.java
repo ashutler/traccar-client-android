@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.traccar.client;
+package org.traccar.client.model;
 
 import android.location.Location;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
-public class Position {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Position extends Eve{
 
     public Position() {
     }
