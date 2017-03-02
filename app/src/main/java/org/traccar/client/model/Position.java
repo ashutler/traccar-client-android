@@ -1,146 +1,77 @@
+/*
+ * Copyright 2015 Anton Tananaev (anton.tananaev@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.traccar.client.model;
+
+import android.location.Location;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Position {
-    private String address;
-    private Float altitude;
-    private Map<String, Object> attributes = new LinkedHashMap<>();
-    private Float course;
-    private int deviceId;
-    private Date deviceTime;
-    private String fixTime;
-    private int id;
-    private Float latitude;
-    private Float longitude;
-    private boolean outdated;
-    private String protocol;
-    private Date serverTime;
-    private Float speed;
-    private boolean valid;
+public class Position extends Eve{
 
-    public String getAddress() {
-        return address;
+    public Position() {
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Float getAltitude() {
-        return altitude;
-    }
-
-    public void setAltitude(Float altitude) {
-        this.altitude = altitude;
-    }
-
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, Object> attributes) {
-        this.attributes = attributes;
-    }
-
-    public Float getCourse() {
-        return course;
-    }
-
-    public void setCourse(Float course) {
-        this.course = course;
-    }
-
-    public int getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(int deviceId) {
+    public Position(String deviceId, Location location, double battery) {
         this.deviceId = deviceId;
+        time = new Date(location.getTime());
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        altitude = location.getAltitude();
+        speed = location.getSpeed() * 1.943844; // speed in knots
+        course = location.getBearing();
+        this.battery = battery;
     }
 
-    public Date getDeviceTime() {
-        return deviceTime;
-    }
+    private long id;
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
-    public void setDeviceTime(Date deviceTime) {
-        this.deviceTime = deviceTime;
-    }
+    private String deviceId;
+    public String getDeviceId() { return deviceId; }
+    public void setDeviceId(String deviceId) { this.deviceId = deviceId; }
 
-    public String getFixTime() {
-        return fixTime;
-    }
+    private Date time;
+    public Date getTime() { return time; }
+    public void setTime(Date time) { this.time = time; }
 
-    public void setFixTime(String fixTime) {
-        this.fixTime = fixTime;
-    }
+    private double latitude;
+    public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    public int getId() {
-        return id;
-    }
+    private double longitude;
+    public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    private double altitude;
+    public double getAltitude() { return altitude; }
+    public void setAltitude(double altitude) { this.altitude = altitude; }
 
-    public Float getLatitude() {
-        return latitude;
-    }
+    private double speed;
+    public double getSpeed() { return speed; }
+    public void setSpeed(double speed) { this.speed = speed; }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
+    private double course;
+    public double getCourse() { return course; }
+    public void setCourse(double course) { this.course = course; }
 
-    public Float getLongitude() {
-        return longitude;
-    }
+    private double battery;
+    public double getBattery() { return battery; }
+    public void setBattery(double battery) { this.battery = battery; }
 
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
-    }
-
-    public boolean isOutdated() {
-        return outdated;
-    }
-
-    public void setOutdated(boolean outdated) {
-        this.outdated = outdated;
-    }
-
-    public String getProtocol() {
-        return protocol;
-    }
-
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
-
-    public Date getServerTime() {
-        return serverTime;
-    }
-
-    public void setServerTime(Date serverTime) {
-        this.serverTime = serverTime;
-    }
-
-    public Float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(Float speed) {
-        this.speed = speed;
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
 }
