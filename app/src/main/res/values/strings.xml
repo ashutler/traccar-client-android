@@ -46,4 +46,6 @@
     <string name="hidden_alert">The app has been hidden. To open it again please dial 8722227 (TRACCAR).</string>
     <string name="devices">Devices</string>
     <string name="title_activity_device_list">DeviceListActivity</string>
+    <string name="error_general">General error occured in webservice callback</string>
+    <string name="error_connection">Connection error in web service callback</string>
 </resources>

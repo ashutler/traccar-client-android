@@ -18,13 +18,13 @@ package org.traccar.client.model;
 
 public class Message {
 
-    private long deviceId;
+    private String deviceId;
 
-    public long getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(long deviceId) {
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 

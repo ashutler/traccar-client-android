@@ -7,19 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.traccar.client.model.Device;
+import org.traccar.client.model.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.traccar.client.R.id.speed;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder>  {
 
-    ArrayList<Device> mDevices;
+    List<Device> mDevices;
     HashMap<String, Position> mPositions;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public DeviceListAdapter(ArrayList<Device> myDataset) {
+    public DeviceListAdapter(List<Device> myDataset) {
         mDevices = myDataset;
     }
 
