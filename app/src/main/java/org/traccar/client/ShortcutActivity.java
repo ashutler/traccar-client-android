@@ -22,9 +22,10 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
+import org.traccar.client.model.Position;
 
 public class ShortcutActivity extends Activity {
 

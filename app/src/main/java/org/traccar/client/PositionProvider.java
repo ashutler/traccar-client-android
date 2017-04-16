@@ -27,6 +27,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.traccar.client.model.Position;
+
 public abstract class PositionProvider {
 
     protected static final String TAG = PositionProvider.class.getSimpleName();

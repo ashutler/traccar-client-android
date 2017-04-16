@@ -17,6 +17,8 @@ package org.traccar.client;
 
 import android.net.Uri;
 
+import org.traccar.client.model.Position;
+
 public class ProtocolFormatter {
 
     public static String formatPositionRequest(String address, int port, boolean secure, Position position) {
