@@ -66,7 +66,7 @@ public class TrackingController implements PositionProvider.PositionListener, Ne
         this.context = context;
         handler = new Handler();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getString(MainActivity.KEY_PROVIDER, "gps").equals("mixed")) {
+        if (preferences.getString(context.getString(R.string.key_provider), context.getString(R.string.key_provider_default)).equals("mixed")) {
             positionProvider = new MixedPositionProvider(context, this);
         } else {
             positionProvider = new SimplePositionProvider(context, this);
@@ -75,9 +75,9 @@ public class TrackingController implements PositionProvider.PositionListener, Ne
         networkManager = new NetworkManager(context, this);
         isOnline = networkManager.isOnline();
 
-        address = preferences.getString(MainActivity.KEY_ADDRESS, null);
-        port = Integer.parseInt(preferences.getString(MainActivity.KEY_PORT, null));
-        secure = preferences.getBoolean(MainActivity.KEY_SECURE, false);
+        address = preferences.getString(context.getString(R.string.key_address), null);
+        port = Integer.parseInt(preferences.getString(context.getString(R.string.key_port), null));
+        secure = preferences.getBoolean(context.getString(R.string.key_secure), false);
 
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
@@ -166,7 +166,7 @@ public class TrackingController implements PositionProvider.PositionListener, Ne
             public void onComplete(boolean success, Position result) {
                 if (success) {
                     if (result != null) {
-                        if (result.getDeviceId().equals(preferences.getString(MainActivity.KEY_DEVICE, null))) {
+                        if (result.getDeviceId().equals(preferences.getString(context.getString(R.string.key_device), null))) {
                             send(result);
                         } else {
                             delete(result);

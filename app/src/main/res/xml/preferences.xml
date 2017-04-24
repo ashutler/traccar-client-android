@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <EditTextPreference
+        android:key="@string/key_username"
+        android:title="@string/settings_username_title"
+        android:summary="@string/settings_username_summary"
+        android:hint="@string/username_hint"/>
+
+    <EditTextPreference
+        android:key="@string/key_password"
+        android:title="@string/settings_password_title"
+        android:summary="@string/settings_password_summary"
+        android:inputType="textPassword"/>
+
     <CheckBoxPreference
         android:defaultValue="false"
-        android:key="status"
+        android:key="@string/key_status"
         android:summaryOff="@string/settings_status_off_summary"
         android:summaryOn="@string/settings_status_on_summary"
         android:title="@string/settings_status_title" />
@@ -13,37 +25,37 @@
         android:title="@string/settings_id_title" />
 
     <EditTextPreference
-        android:defaultValue="demo.traccar.org"
-        android:key="address"
+        android:defaultValue="@string/key_address_default"
+        android:key="@string/key_address"
         android:summary="@string/settings_address_summary"
         android:title="@string/settings_address_title" />
 
     <EditTextPreference
-        android:defaultValue="5055"
-        android:key="port"
+        android:defaultValue="@string/key_port_default"
+        android:key="@string/key_port"
         android:numeric="integer"
         android:summary="@string/settings_port_summary"
         android:title="@string/settings_port_title" />
 
     <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="secure"
+        android:defaultValue="@string/key_secure_default"
+        android:key="@string/key_secure"
         android:summaryOff="@string/settings_secure_off_summary"
         android:summaryOn="@string/settings_secure_on_summary"
         android:title="@string/settings_secure_title" />
 
     <EditTextPreference
-        android:defaultValue="300"
-        android:key="interval"
+        android:defaultValue="@string/key_interval_default"
+        android:key="@string/key_interval"
         android:numeric="integer"
         android:summary="@string/settings_interval_summary"
         android:title="@string/settings_interval_title" />
 
     <ListPreference
-        android:defaultValue="gps"
+        android:defaultValue="@string/key_provider_default"
         android:entries="@array/settings_provider_names"
         android:entryValues="@array/settings_provider_values"
-        android:key="provider"
+        android:key="@string/key_provider"
         android:summary="@string/settings_provider_summary"
         android:title="@string/settings_provider_title" />
 

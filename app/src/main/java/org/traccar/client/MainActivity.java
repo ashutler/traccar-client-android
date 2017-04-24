@@ -41,18 +41,24 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import static org.traccar.client.R.xml.preferences;
+
 @SuppressWarnings("deprecation")
 public class MainActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
+
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    public static final String KEY_DEVICE = "id";
-    public static final String KEY_ADDRESS = "address";
-    public static final String KEY_PORT = "port";
-    public static final String KEY_SECURE = "secure";
-    public static final String KEY_INTERVAL = "interval";
-    public static final String KEY_PROVIDER = "provider";
-    public static final String KEY_STATUS = "status";
+    private String KEY_USERNAME;
+    private String KEY_PASSWORD;
+    private String KEY_DEVICE;
+    private String KEY_ADDRESS;
+    private String KEY_PORT;
+    private String KEY_SECURE;
+    private String KEY_INTERVAL;
+    private String KEY_PROVIDER;
+    private String KEY_STATUS;
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 2;
 
@@ -65,12 +71,22 @@ public class MainActivity extends PreferenceActivity implements OnSharedPreferen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        KEY_USERNAME = this.getString(R.string.key_username);
+        KEY_PASSWORD = this.getString(R.string.key_password);
+        KEY_DEVICE = this.getString(R.string.key_device);
+        KEY_ADDRESS = this.getString(R.string.key_address);
+        KEY_PORT = this.getString(R.string.key_port);
+        KEY_SECURE = this.getString(R.string.key_secure);
+        KEY_INTERVAL = this.getString(R.string.key_interval);
+        KEY_PROVIDER = this.getString(R.string.key_provider);
+        KEY_STATUS = this.getString(R.string.key_status);
+
         if (BuildConfig.HIDDEN_APP) {
             removeLauncherIcon();
         }
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        addPreferencesFromResource(R.xml.preferences);
+        addPreferencesFromResource(preferences);
         initPreferences();
 
         findPreference(KEY_DEVICE).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -194,6 +210,31 @@ public class MainActivity extends PreferenceActivity implements OnSharedPreferen
         } else if (key.equals(KEY_DEVICE)) {
             findPreference(KEY_DEVICE).setSummary(sharedPreferences.getString(KEY_DEVICE, null));
         }
+        if (key.equals(KEY_USERNAME)) {
+            EditTextPreference usernamePreference = (EditTextPreference) findPreference(KEY_USERNAME);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(getString(R.string.key_username), usernamePreference.getText())
+                    .commit();
+            usernamePreference.setSummary(getString(R.string.key_username));
+        }
+        if (key.equals(KEY_USERNAME)) {
+            EditTextPreference passwordPreference = (EditTextPreference) findPreference(KEY_PASSWORD);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(getString(R.string.key_password), passwordPreference.getText())
+                    .commit();
+        }
+        if (key.equals(KEY_ADDRESS)) {
+            EditTextPreference addressPreference = (EditTextPreference) findPreference(KEY_ADDRESS);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(getString(R.string.key_address), addressPreference.getText())
+                    .commit();
+        }
+        if (key.equals(KEY_PORT)) {
+            EditTextPreference portPreference = (EditTextPreference) findPreference(KEY_PORT);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(getString(R.string.key_port), portPreference.getText())
+                    .commit();
+        }
     }
 
     @Override
@@ -223,7 +264,7 @@ public class MainActivity extends PreferenceActivity implements OnSharedPreferen
     }
 
     private void initPreferences() {
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, preferences, false);
 
         if (!sharedPreferences.contains(KEY_DEVICE)) {
             String id = String.valueOf(new Random().nextInt(900000) + 100000);

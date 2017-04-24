@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.traccar.client.model.Device;
+import org.traccar.client.model.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.traccar.client.R.id.speed;
@@ -16,18 +18,18 @@ import static org.traccar.client.R.id.speed;
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder>  {
 
     ArrayList<Device> mDevices;
-    List<org.traccar.client.model.Position> mPositions;
+    HashMap<String, List<Position>> mPositions;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public DeviceListAdapter(ArrayList<Device> myDataset,
-                             List<org.traccar.client.model.Position> positions) {
+                             HashMap<String, List<Position>> positions) {
         mDevices = myDataset;
         mPositions = positions;
     }
 
     public DeviceListAdapter() {
     }
-    public void refill(ArrayList<Device> devices, List<org.traccar.client.model.Position> positions) {
+    public void refill(ArrayList<Device> devices, HashMap<String, List<Position>> positions) {
         mPositions.clear();
         mPositions = positions;
         mDevices.clear();
@@ -49,9 +51,11 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
         Device device = mDevices.get(position);
 
         if (device != null) {
-            holder.mName.setText(device.getName());
-            holder.mPosition.setText(device.getLastUpdate().toString());
-            holder.mSpeed.setText(device.getId());
+            holder.deviceName.setText(device.getName());
+            holder.devicePosition.setText(mPositions.get(device.getId()).get(0).getLatitude() + " / " + mPositions.get(device.getId()).get(0).getLongitude());
+            holder.deviceSpeed.setText(String.valueOf(mPositions.get(device.getId()).get(0).getSpeed()));
+            //holder.mPosition.setText(device.getLastUpdate().toString());
+            //holder.mSpeed.setText(device.getId());
         }
     }
 
@@ -61,17 +65,17 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public View mDeviceListItem;
-        public TextView mName;
-        public TextView mPosition;
-        public TextView mSpeed;
+        public View deviceListItem;
+        public TextView deviceName;
+        public TextView devicePosition;
+        public TextView deviceSpeed;
 
         public ViewHolder(View item) {
             super(item);
-            mDeviceListItem = item;
-            mName = (TextView)item.findViewById(R.id.device_name);
-            mPosition = (TextView)item.findViewById(R.id.position);
-            mSpeed = (TextView)item.findViewById(speed);
+            deviceListItem = item;
+            deviceName = (TextView)item.findViewById(R.id.device_name);
+            devicePosition = (TextView)item.findViewById(R.id.position);
+            deviceSpeed = (TextView)item.findViewById(speed);
         }
     }
 }

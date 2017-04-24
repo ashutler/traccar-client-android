@@ -1,10 +1,13 @@
 package org.traccar.client;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import junit.framework.Assert;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.JavaNetCookieJar;
@@ -29,14 +33,14 @@ public class DeviceListActivity extends Activity {
     private RecyclerView mRecyclerView;
     private DeviceListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Devices");
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.devices_list);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -47,7 +51,7 @@ public class DeviceListActivity extends Activity {
 
         // specify an adapter (see also next example)
         mAdapter = new DeviceListAdapter(new ArrayList<Device>(),
-                new ArrayList<Position>());
+                new HashMap<String, List<Position>>());
         mRecyclerView.setAdapter(mAdapter);
 
         new GetDevices().execute();
@@ -58,6 +62,7 @@ public class DeviceListActivity extends Activity {
         private List<User> users = null;
         private List<Device> devices = null;
         private List<Position> positions = null;
+        private HashMap<String, List<Position>> deviceMap = new HashMap<String, List<Position>>();
 
         @Override
         protected void onPreExecute() {
@@ -68,9 +73,17 @@ public class DeviceListActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             //TODO: Get this from settings
-            String username = "dustin@cydonian.ca";
-            String password = "caixI8tLJk4x";
-            String serverURL = "http://cydonian.homelinux.net:8082";
+            //preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE); "caixI8tLJk4x";
+
+            String username = preferences.getString(getString(R.string.key_username), "user");
+            String password = preferences.getString(getString(R.string.key_password), "password");
+            String domain = preferences.getString(getString(R.string.key_address), getString(R.string.key_address_default));
+            String port = preferences.getString(getString(R.string.key_port), getString(R.string.key_port_default));
+            String serverURL = "http://" + domain + ":" + port;
+
+            Log.d("SETTINGS DATA: ", "Domain: " + domain + "\n" +
+                                     "Port: " + port + "\n" +
+                                     "Server URL: " + serverURL + "\n");
 
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
@@ -92,7 +105,11 @@ public class DeviceListActivity extends Activity {
                 // Get the positions for each device
                 // TODO: pass these separately into the adapter
                 for(Device device: devices) {
+                    Log.d("RESONSE BODY --> ", service.getPositions(device.getId()).execute().body().toString());
                     positions = service.getPositions(device.getId()).execute().body();
+                    if (positions != null && device.getId() != null) {
+                        deviceMap.put(device.getId(), positions);
+                    }
                 }
                 Assert.assertNotNull(user);
             } catch (IOException e) {
@@ -105,7 +122,7 @@ public class DeviceListActivity extends Activity {
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
             // TODO: Set the data in the d
-            mAdapter.refill((ArrayList<Device>) devices, positions);
+            mAdapter.refill((ArrayList<Device>) devices, deviceMap);
         }
 
     }

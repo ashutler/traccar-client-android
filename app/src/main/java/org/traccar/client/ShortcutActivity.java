@@ -62,13 +62,13 @@ public class ShortcutActivity extends Activity {
         if (location != null) {
 
             Position position = new Position(
-                    preferences.getString(MainActivity.KEY_DEVICE, null),
+                    preferences.getString(getString(R.string.key_device), null),
                     location, PositionProvider.getBatteryLevel(this));
 
             String request = ProtocolFormatter.formatPositionRequest(
-                    preferences.getString(MainActivity.KEY_ADDRESS, null),
-                    Integer.parseInt(preferences.getString(MainActivity.KEY_PORT, null)),
-                    preferences.getBoolean(MainActivity.KEY_SECURE, false),
+                    preferences.getString(getString(R.string.key_address), null),
+                    Integer.parseInt(preferences.getString(getString(R.string.key_port), null)),
+                    preferences.getBoolean(getString(R.string.key_secure), false),
                     position, ALARM_SOS);
 
             RequestManager.sendRequestAsync(request, new RequestManager.RequestHandler() {
@@ -98,13 +98,13 @@ public class ShortcutActivity extends Activity {
         switch (action) {
             case EXTRA_ACTION_START:
                 PreferenceManager.getDefaultSharedPreferences(this)
-                        .edit().putBoolean(MainActivity.KEY_STATUS, true).commit();
+                        .edit().putBoolean(getString(R.string.key_status), true).commit();
                 startService(new Intent(this, TrackingService.class));
                 Toast.makeText(this, R.string.status_service_create, Toast.LENGTH_SHORT).show();
                 break;
             case EXTRA_ACTION_STOP:
                 PreferenceManager.getDefaultSharedPreferences(this)
-                        .edit().putBoolean(MainActivity.KEY_STATUS, false).commit();
+                        .edit().putBoolean(getString(R.string.key_status), false).commit();
                 stopService(new Intent(this, TrackingService.class));
                 Toast.makeText(this, R.string.status_service_destroy, Toast.LENGTH_SHORT).show();
                 break;

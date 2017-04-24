@@ -56,10 +56,10 @@ public abstract class PositionProvider {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        deviceId = preferences.getString(MainActivity.KEY_DEVICE, null);
-        period = Long.parseLong(preferences.getString(MainActivity.KEY_INTERVAL, null)) * 1000;
+        deviceId = preferences.getString(context.getString(R.string.key_device), null);
+        period = Long.parseLong(preferences.getString(context.getString(R.string.key_interval), null)) * 1000;
 
-        type = preferences.getString(MainActivity.KEY_PROVIDER, "gps");
+        type = preferences.getString(context.getString(R.string.key_provider), context.getString(R.string.key_provider_default));
     }
 
     public abstract void startUpdates();

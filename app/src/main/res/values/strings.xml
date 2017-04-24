@@ -5,6 +5,17 @@
     <string name="shortcut_start">Traccar - Start</string>
     <string name="shortcut_stop">Traccar - Stop</string>
     <string name="shortcut_sos">Traccar - SOS</string>
+    <string name="key_username" translatable="false">Username</string>
+    <string name="key_device"  translatable="false">id</string>
+    <string name="key_address" translatable="false">address</string>
+    <string name="key_address_default" translatable="false">demo.traccar.org</string>
+    <string name="key_port" translatable="false">port</string>
+    <string name="key_port_default" translatable="false">5055</string>
+    <string name="key_secure" translatable="false">secure</string>
+    <string name="key_interval" translatable="false">interval</string>
+    <string name="key_provider" translatable="false">provider</string>
+    <string name="key_provider_default" translatable="false">gps</string>
+    <string name="key_status" translatable="false">status</string>
     <string name="settings_id_title">Device identifier</string>
     <string name="settings_address_title">Server address</string>
     <string name="settings_address_summary">Domain name or IP address</string>
@@ -46,4 +57,12 @@
     <string name="hidden_alert">The app has been hidden. To open it again please dial 8722227 (TRACCAR).</string>
     <string name="devices">Devices</string>
     <string name="title_activity_device_list">DeviceListActivity</string>
+    <string name="key_interval_default">300</string>
+    <string name="key_secure_default">false</string>
+    <string name="username_hint">(Traccar Username)</string>
+    <string name="settings_username_title">Username</string>
+    <string name="settings_username_summary">Traccar Username</string>
+    <string name="settings_password_summary">Traccar Password</string>
+    <string name="settings_password_title">Password</string>
+    <string name="key_password">password</string>
 </resources>
